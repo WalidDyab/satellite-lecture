@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amateur Satellite Communication Portal</title>
+<style>
+:root{
+  --navy:#071d49;
+  --deep:#050914;
+  --blue:#16d7ff;
+  --purple:#6d3df2;
+  --gold:#f6c453;
+  --card:rgba(255,255,255,.09);
+  --border:rgba(255,255,255,.18);
+  --text:#f5f8ff;
+  --muted:#c7d2e5;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial, Helvetica, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(22,215,255,.24), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(109,61,242,.30), transparent 26%),
+    radial-gradient(circle at 50% 100%, rgba(246,196,83,.16), transparent 28%),
+    linear-gradient(135deg,#050914 0%,#081b3d 52%,#160b2f 100%);
+}
+.wrapper{
+  width:min(1120px,100%);
+  margin:0 auto;
+  padding:28px 18px 42px;
+}
+.hero{
+  min-height:74vh;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding:28px 0;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border:1px solid rgba(246,196,83,.55);
+  border-radius:999px;
+  color:#ffe4a3;
+  background:rgba(246,196,83,.09);
+  font-weight:700;
+  margin-bottom:18px;
+}
+h1{
+  font-size:clamp(2.15rem,7vw,5.2rem);
+  line-height:1.02;
+  margin:0 0 18px;
+  letter-spacing:-.04em;
+}
+.gradient{
+  background:linear-gradient(90deg,var(--blue),#fff,var(--gold));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.subtitle{
+  max-width:850px;
+  margin:0 auto 30px;
+  color:var(--muted);
+  font-size:clamp(1.05rem,2.5vw,1.35rem);
+  line-height:1.65;
+}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-top:22px;
+}
+.card{
+  text-decoration:none;
+  color:var(--text);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:22px 18px;
+  min-height:178px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  box-shadow:0 20px 60px rgba(0,0,0,.22);
+  backdrop-filter:blur(14px);
+  transition:transform .18s ease,border-color .18s ease,background .18s ease;
+}
+.card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(22,215,255,.7);
+  background:rgba(255,255,255,.13);
+}
+.icon{
+  font-size:2.15rem;
+  margin-bottom:18px;
+}
+.card h2{
+  font-size:1.2rem;
+  margin:0 0 8px;
+}
+.card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.45;
+  font-size:.94rem;
+}
+.section{
+  margin-top:18px;
+  padding:22px;
+  border-radius:24px;
+  background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.13);
+}
+.section h3{
+  margin:0 0 10px;
+  color:#ffe4a3;
+}
+.section p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.7;
+}
+.footer{
+  text-align:center;
+  color:#9fb0cc;
+  padding:24px 0 8px;
+}
+.ar{direction:rtl;font-family:Tahoma, Arial, sans-serif}
+@media(max-width:900px){
+  .cards{grid-template-columns:1fr 1fr}
+  .hero{min-height:auto}
+}
+@media(max-width:560px){
+  .wrapper{padding:18px 12px 30px}
+  .cards{grid-template-columns:1fr}
+  .card{min-height:145px}
+  .section{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <main class="hero">
+    <div>
+      <div class="badge">🛰️ Satathon Learning Portal</div>
+      <h1><span class="gradient">Amateur Satellite</span><br>Communication</h1>
+      <p class="subtitle">
+        A complete bilingual learning package for satellite communication: visual lecture pages,
+        interactive quizzes, practical workflows, TLE tracking, Doppler correction, antennas, LoRa, TinyGS,
+        and student satellite missions.
+      </p>
+
+      <div class="cards">
+        <a class="card" href="english/">
+          <div>
+            <div class="icon">📘</div>
+            <h2>English Lecture</h2>
+            <p>Full visual lecture and technical explanations.</p>
+          </div>
+        </a>
+        <a class="card ar" href="arabic/">
+          <div>
+            <div class="icon">📗</div>
+            <h2>المحاضرة العربية</h2>
+            <p>النسخة العربية الكاملة للمشاركين.</p>
+          </div>
+        </a>
+        <a class="card" href="quiz-en/">
+          <div>
+            <div class="icon">🚀</div>
+            <h2>English Quiz</h2>
+            <p>Interactive challenge for reviewing key concepts.</p>
+          </div>
+        </a>
+        <a class="card ar" href="quiz-ar/">
+          <div>
+            <div class="icon">🏆</div>
+            <h2>الاختبار العربي</h2>
+            <p>تحدي تفاعلي باللغة العربية.</p>
+          </div>
+        </a>
+      </div>
+
+      <section class="section">
+        <h3>Recommended Sharing Method</h3>
+        <p>
+          Share this portal link through WhatsApp, email, or a QR code. Opening the hosted webpage is more reliable
+          on Android and iPhone than sending HTML files directly.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <div class="footer">
+    Developed as an educational resource for amateur satellite communication outreach and training.
+  </div>
+</div>
+</body>
+</html>

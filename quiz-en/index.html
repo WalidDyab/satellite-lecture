@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satellite Quiz - Mobile Edition</title>
+    <style>
+        :root {
+            --navy: #071d49;
+            --blue: #0b5ed7;
+            --purple: #5a23b5;
+            --bg: #f6f8fc;
+            --card: #ffffff;
+            --text: #12213a;
+            --correct: #198754;
+            --wrong: #dc3545;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--navy), var(--purple));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .container {
+            flex: 1;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .quiz-card {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(7,29,73,0.08);
+            border: 1px solid #dbe2ef;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #6c757d;
+        }
+
+        .progress-container {
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--blue), var(--purple));
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--navy);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .option-btn {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text);
+            font-family: inherit;
+        }
+
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+
+        .option-btn.selected {
+            border-color: var(--blue);
+            background-color: #f0f7ff;
+        }
+
+        .option-btn.correct {
+            background-color: #d1e7dd;
+            border-color: var(--correct);
+            color: #0f5132;
+        }
+
+        .option-btn.wrong {
+            background-color: #f8d7da;
+            border-color: var(--wrong);
+            color: #842029;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .feedback.correct-ui { background: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+        .feedback.wrong-ui { background: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+
+        .action-btn {
+            margin-top: 25px;
+            padding: 16px;
+            border-radius: 16px;
+            border: none;
+            background: linear-gradient(135deg, var(--navy), var(--purple));
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(90,35,181,0.25);
+        }
+
+        .action-btn:disabled {
+            background: #ccc;
+            box-shadow: none;
+        }
+
+        /* Result Screen */
+        .result-body {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--bg);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--purple);
+            border: 5px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .tier-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #fff8e1;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 999px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .home-link {
+            display: block;
+            margin-top: 20px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        #timer {
+            color: var(--wrong);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .urgent {
+            animation: pulse 1s infinite;
+            color: var(--wrong) !important;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Satellite Mission Quiz</h1>
+</header>
+
+<div class="container">
+    <!-- Start Screen -->
+    <div id="start-screen" class="quiz-card" style="justify-content: center; text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: 20px;">🛰️</div>
+        <h2 style="margin-bottom: 10px;">Are you ready for AOS?</h2>
+        <p style="color: #666; margin-bottom: 30px;">Test your knowledge of orbital mechanics, tracking, and amateur radio modes.</p>
+        <button class="action-btn" onclick="startQuiz()">Start Mission</button>
+        <a href="../english/" class="home-link">Return to Lecture</a>
+    </div>
+
+    <!-- Quiz Area -->
+    <div id="quiz-area" class="quiz-card" style="display: none;">
+        <div class="stats">
+            <span id="q-count">Question 1/20</span>
+            <span id="timer-box">Time: <span id="timer">15</span>s</span>
+        </div>
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        
+        <div id="question-container">
+            <div class="question-text" id="q-text">Question loading...</div>
+            <div class="options-grid" id="options-box"></div>
+        </div>
+
+        <div id="feedback-box" class="feedback"></div>
+        
+        <button id="next-btn" class="action-btn" style="display: none;" onclick="nextQuestion()">Next Question →</button>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="quiz-card result-body" style="display: none; justify-content: center;">
+        <h2 style="margin-bottom: 20px;">Mission Complete!</h2>
+        <div class="score-circle" id="final-score">85%</div>
+        <div id="tier-badge" class="tier-badge">Satellite Expert</div>
+        <p id="result-msg" style="margin-bottom: 30px;">Great job! You are ready to operate a ground station.</p>
+        
+        <button class="action-btn" onclick="startQuiz()">Retry Mission</button>
+        <a href="../english/" class="home-link">Back to Lecture</a>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "What is the primary reason for communicating through satellites?",
+            options: ["To bypass local radio regulations", "To reach people beyond the horizon and overcome Earth's curvature", "To improve local FM radio quality", "To save energy on ground stations"],
+            correct: 1,
+            feedback: "Satellites act as high-altitude relays, allowing line-of-sight communication over thousands of miles."
+        },
+        {
+            q: "What does 'AOS' stand for in satellite tracking?",
+            options: ["Altitude of Satellite", "Automatic Orbital System", "Acquisition of Signal", "Azimuth Operating Speed"],
+            correct: 2,
+            feedback: "AOS is the moment the satellite rises above your local horizon and its signal can be received."
+        },
+        {
+            q: "What is the typical duration of a Low Earth Orbit (LEO) satellite pass?",
+            options: ["24 hours", "1 to 2 hours", "10 to 15 minutes", "Exactly 5 minutes"],
+            correct: 2,
+            feedback: "Most LEO passes last between 10 and 15 minutes depending on the elevation."
+        },
+        {
+            q: "Which mode is the oldest digital mode, using Morse code to send text?",
+            options: ["FM Voice", "Slow Scan TV (SSTV)", "CW (Continuous Wave)", "AX.25 Packet Radio"],
+            correct: 2,
+            feedback: "CW (Continuous Wave) uses Morse code and is highly effective even in weak signal conditions."
+        },
+        {
+            q: "What is the main purpose of Slow Scan TV (SSTV)?",
+            options: ["Sending live HD video", "Transmitting still images line by line via audio", "Real-time position tracking", "Voice communication"],
+            correct: 1,
+            feedback: "SSTV converts images into audio tones, allowing them to be sent over standard voice channels."
+        },
+        {
+            q: "Which protocol is the reliable 'backbone' of amateur satellite data communications?",
+            options: ["BPSK", "AX.25 Packet Radio", "Morse Code", "FM Voice"],
+            correct: 1,
+            feedback: "AX.25 is the standard data link layer protocol used for telemetry, BBS, and APRS."
+        },
+        {
+            q: "What does TLE stand for?",
+            options: ["Tracking Link Element", "Time Log Entry", "Two Line Element set", "Trajectory Location Engine"],
+            correct: 2,
+            feedback: "TLE is the data format used to describe the orbit of a satellite."
+        },
+        {
+            q: "At what point during a satellite pass is the Doppler shift exactly zero?",
+            options: ["At AOS (Acquisition of Signal)", "At LOS (Loss of Signal)", "At Max Elevation (Overhead/TCA)", "During the entire pass"],
+            correct: 2,
+            feedback: "At the Time of Closest Approach (TCA), the relative velocity is zero, resulting in no Doppler shift."
+        },
+        {
+            q: "Which antenna type is common for handheld amateur satellite work?",
+            options: ["Vertical Whip", "Magnetic Loop", "Yagi Antenna", "Dipole"],
+            correct: 2,
+            feedback: "Yagis are directional antennas that provide the gain needed to hear weak satellite signals."
+        },
+        {
+            q: "What is the function of an Azimuth and Elevation rotator?",
+            options: ["To boost radio power", "To automatically point the antenna at the moving satellite", "To change frequency", "To charge the satellite"],
+            correct: 1,
+            feedback: "Rotators allow a computer-controlled system to keep the antenna pointed at the satellite's exact position."
+        },
+        {
+            q: "Where is the geostationary satellite QO-100 located?",
+            options: ["500 km altitude", "About 35,786 km above Earth", "In a polar orbit", "Moving fast over the horizon"],
+            correct: 1,
+            feedback: "QO-100 is in a geostationary orbit, meaning it stays fixed above one point on the equator."
+        },
+        {
+            q: "Why must TLE files be updated regularly?",
+            options: ["To change the satellite's name", "Because orbital errors grow over time, leading to missed passes", "To unlock FM mode", "To increase battery life"],
+            correct: 1,
+            feedback: "Drag and gravitational anomalies cause orbits to shift; fresh TLEs ensure tracking accuracy."
+        },
+        {
+            q: "What is the TinyGS network mainly used for?",
+            options: ["Voice contacts with ISS", "Receiving and sharing LoRa satellite data globally", "Weather forecasting", "Launching CubeSats"],
+            correct: 1,
+            feedback: "TinyGS is a global network of low-cost ground stations specifically for LoRa satellites."
+        },
+        {
+            q: "Which modulation is used by LoRa satellites for high sensitivity and long range?",
+            options: ["AM", "Morse Code", "Chirp Spread Spectrum (CSS)", "FM"],
+            correct: 2,
+            feedback: "LoRa uses Chirp Spread Spectrum to maintain links even below the noise floor."
+        },
+        {
+            q: "What is the purpose of the S.A.T. Controller?",
+            options: ["A type of solar panel", "A device that automates antenna tracking and Doppler correction", "A satellite battery", "A mobile tracking app"],
+            correct: 1,
+            feedback: "The S.A.T. Controller interfaces between the PC and the radio/rotator to automate the station."
+        },
+        {
+            q: "What is the 'Downlink' in satellite communications?",
+            options: ["The signal you send to the satellite", "The signal the satellite sends back to Earth", "A software update", "The ground station's internet connection"],
+            correct: 1,
+            feedback: "Downlink refers to the frequency and signal coming from the space vehicle to the ground."
+        },
+        {
+            q: "Which field in an AX.25 frame provides a CRC-16 error check?",
+            options: ["Address Field", "Control Field", "FCS (Frame Check Sequence)", "Flag"],
+            correct: 2,
+            feedback: "The FCS ensures that the data packet arrived without corruption."
+        },
+        {
+            q: "What happens to the received frequency as a satellite approaches your location?",
+            options: ["It shifts higher (+ Shift)", "It shifts lower (- Shift)", "It stays the same", "It disappears"],
+            correct: 0,
+            feedback: "Just like an ambulance siren, the frequency is compressed and shifts higher as it moves toward you."
+        },
+        {
+            q: "Which popular beginner satellite is an FM repeater launched in 1995?",
+            options: ["SO-50", "RS-44", "AO-91", "ISS"],
+            correct: 2,
+            feedback: "AO-91 (RadFxSat) is a very popular FM repeater. Note: AO-27 was the 1993/95 era classic."
+        },
+        {
+            q: "What does ARISS stand for?",
+            options: ["Amateur Radio on the International Space Station", "Aeronautical Radio in Satellite Systems", "Automatic Reporting in Space Science", "Advanced Radio for ISS Stations"],
+            correct: 0,
+            feedback: "ARISS is the program that allows students to talk directly to astronauts on the ISS via radio."
+        }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let timer;
+    let timeLeft = 15;
+    let canAnswer = false;
+
+    const startScreen = document.getElementById('start-screen');
+    const quizArea = document.getElementById('quiz-area');
+    const resultScreen = document.getElementById('result-screen');
+    const qText = document.getElementById('q-text');
+    const optionsBox = document.getElementById('options-box');
+    const progress = document.getElementById('progress-bar');
+    const qCount = document.getElementById('q-count');
+    const timerDisplay = document.getElementById('timer');
+    const feedbackBox = document.getElementById('feedback-box');
+    const nextBtn = document.getElementById('next-btn');
+
+    function startQuiz() {
+        currentQ = 0;
+        score = 0;
+        startScreen.style.display = 'none';
+        resultScreen.style.display = 'none';
+        quizArea.style.display = 'flex';
+        // Shuffle questions
+        questions.sort(() => Math.random() - 0.5);
+        showQuestion();
+    }
+
+    function showQuestion() {
+        canAnswer = true;
+        nextBtn.style.display = 'none';
+        feedbackBox.style.display = 'none';
+        feedbackBox.className = 'feedback';
+        
+        const q = questions[currentQ];
+        qText.innerText = q.q;
+        qCount.innerText = `Question ${currentQ + 1}/${questions.length}`;
+        progress.style.width = `${((currentQ) / questions.length) * 100}%`;
+
+        optionsBox.innerHTML = '';
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => selectOption(i);
+            optionsBox.appendChild(btn);
+        });
+
+        startTimer();
+    }
+
+    function startTimer() {
+        timeLeft = 15;
+        timerDisplay.innerText = timeLeft;
+        timerDisplay.parentElement.classList.remove('urgent');
+        clearInterval(timer);
+        timer = setInterval(() => {
+            timeLeft--;
+            timerDisplay.innerText = timeLeft;
+            if (timeLeft <= 5) timerDisplay.parentElement.classList.add('urgent');
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                selectOption(-1); // Time out
+            }
+        }, 1000);
+    }
+
+    function selectOption(idx) {
+        if (!canAnswer) return;
+        canAnswer = false;
+        clearInterval(timer);
+
+        const q = questions[currentQ];
+        const buttons = optionsBox.getElementsByClassName('option-btn');
+        
+        // Highlight correct and wrong
+        if (idx !== -1) {
+            if (idx === q.correct) {
+                score++;
+                buttons[idx].classList.add('correct');
+                feedbackBox.innerHTML = `<strong>Correct!</strong> ${q.feedback}`;
+                feedbackBox.classList.add('correct-ui');
+            } else {
+                buttons[idx].classList.add('wrong');
+                buttons[q.correct].classList.add('correct');
+                feedbackBox.innerHTML = `<strong>Incorrect.</strong> ${q.feedback}`;
+                feedbackBox.classList.add('wrong-ui');
+            }
+        } else {
+            buttons[q.correct].classList.add('correct');
+            feedbackBox.innerHTML = `<strong>Time's up!</strong> ${q.feedback}`;
+            feedbackBox.classList.add('wrong-ui');
+        }
+
+        feedbackBox.style.display = 'block';
+        nextBtn.style.display = 'block';
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerText = 'Finish Mission';
+        } else {
+            nextBtn.innerText = 'Next Question →';
+        }
+    }
+
+    function nextQuestion() {
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        quizArea.style.display = 'none';
+        resultScreen.style.display = 'flex';
+        
+        const percent = Math.round((score / questions.length) * 100);
+        document.getElementById('final-score').innerText = `${percent}%`;
+        
+        const badge = document.getElementById('tier-badge');
+        const msg = document.getElementById('result-msg');
+        
+        if (percent >= 90) {
+            badge.innerText = "🏆 Outstanding Operator";
+            msg.innerText = "Exceptional! You have a deep understanding of satellite operations.";
+        } else if (percent >= 75) {
+            badge.innerText = "🚀 Mission Ready";
+            msg.innerText = "Great job! You're ready to start tracking and communicating.";
+        } else if (percent >= 60) {
+            badge.innerText = "🛰️ Satellite Technician";
+            msg.innerText = "Good effort. Review the lecture notes to sharpen your skills.";
+        } else {
+            badge.innerText = "📚 Learning the Ropes";
+            msg.innerText = "Keep studying! Amateur radio is a journey of continuous learning.";
+        }
+    }
+</script>
+
+</body>
+</html>

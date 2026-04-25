@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي الأقمار الصناعية - نسخة الجوال</title>
+    <style>
+        :root {
+            --navy: #071d49;
+            --blue: #0b5ed7;
+            --purple: #5a23b5;
+            --bg: #f6f8fc;
+            --card: #ffffff;
+            --text: #12213a;
+            --correct: #198754;
+            --wrong: #dc3545;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Tahoma', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            direction: rtl;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--navy), var(--purple));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .container {
+            flex: 1;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .quiz-card {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(7,29,73,0.08);
+            border: 1px solid #dbe2ef;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #6c757d;
+        }
+
+        .progress-container {
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to left, var(--blue), var(--purple));
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--navy);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .option-btn {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: right;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text);
+            font-family: inherit;
+        }
+
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+
+        .option-btn.correct {
+            background-color: #d1e7dd;
+            border-color: var(--correct);
+            color: #0f5132;
+        }
+
+        .option-btn.wrong {
+            background-color: #f8d7da;
+            border-color: var(--wrong);
+            color: #842029;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .feedback.correct-ui { background: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+        .feedback.wrong-ui { background: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+
+        .action-btn {
+            margin-top: 25px;
+            padding: 16px;
+            border-radius: 16px;
+            border: none;
+            background: linear-gradient(135deg, var(--navy), var(--purple));
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(90,35,181,0.25);
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--bg);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--purple);
+            border: 5px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .tier-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #fff8e1;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 999px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .home-link {
+            display: block;
+            margin-top: 20px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .urgent { color: var(--wrong) !important; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>تحدي مهمة الأقمار الصناعية</h1>
+</header>
+
+<div class="container">
+    <!-- Start Screen -->
+    <div id="start-screen" class="quiz-card" style="justify-content: center; text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: 20px;">🛰️</div>
+        <h2 style="margin-bottom: 10px;">هل أنت مستعد لـ AOS؟</h2>
+        <p style="color: #666; margin-bottom: 30px;">اختبر معلوماتك في ميكانيكا المدارات وتتبع الأقمار وأنماط الراديو للهواة.</p>
+        <button class="action-btn" onclick="startQuiz()">ابدأ المهمة</button>
+        <a href="../arabic/" class="home-link">العودة إلى المحاضرة</a>
+    </div>
+
+    <!-- Quiz Area -->
+    <div id="quiz-area" class="quiz-card" style="display: none;">
+        <div class="stats">
+            <span id="q-count">السؤال 1/20</span>
+            <span id="timer-box">الوقت: <span id="timer">15</span> ثانية</span>
+        </div>
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        
+        <div id="question-container">
+            <div class="question-text" id="q-text">جاري التحميل...</div>
+            <div class="options-grid" id="options-box"></div>
+        </div>
+
+        <div id="feedback-box" class="feedback"></div>
+        
+        <button id="next-btn" class="action-btn" style="display: none;" onclick="nextQuestion()">السؤال التالي ←</button>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="quiz-card" style="display: none; text-align: center; justify-content: center;">
+        <h2 style="margin-bottom: 20px;">اكتملت المهمة!</h2>
+        <div class="score-circle" id="final-score">0%</div>
+        <div id="tier-badge" class="tier-badge">مشغل أقمار صناعية</div>
+        <p id="result-msg" style="margin-bottom: 30px;">أحسنت! أنت مستعد لتشغيل محطة أرضية.</p>
+        
+        <button class="action-btn" onclick="startQuiz()">إعادة المحاولة</button>
+        <a href="../arabic/" class="home-link">العودة إلى المحاضرة</a>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "ما هو السبب الرئيسي للتواصل عبر الأقمار الصناعية؟",
+            options: ["لتجاوز لوائح الراديو المحلية", "للوصول إلى أشخاص وراء الأفق والتغلب على انحناء الأرض", "لتحسين جودة راديو FM المحلي", "لتوفير الطاقة في المحطات الأرضية"],
+            correct: 1,
+            feedback: "تعمل الأقمار الصناعية كمكررات عالية الارتفاع، مما يسمح بالاتصال المباشر عبر آلاف الأميال."
+        },
+        {
+            q: "ماذا يرمز اختصار 'AOS' في تتبع الأقمار الصناعية؟",
+            options: ["ارتفاع القمر الصناعي", "النظام المداري التلقائي", "لحظة استقبال الإشارة (Acquisition of Signal)", "سرعة تشغيل السمت"],
+            correct: 2,
+            feedback: "AOS هي اللحظة التي يرتفع فيها القمر الصناعي فوق الأفق المحلي ويمكن استقبال إشارته."
+        },
+        {
+            q: "ما هي المدة المعتادة لمرور قمر صناعي في المدار الأرضي المنخفض (LEO)؟",
+            options: ["24 ساعة", "ساعة إلى ساعتين", "10 إلى 15 دقيقة", "5 دقائق بالضبط"],
+            correct: 2,
+            feedback: "تستغرق معظم تمريرات LEO ما بين 10 إلى 15 دقيقة حسب الارتفاع ومسار المرور."
+        },
+        {
+            q: "ما هو أقدم نمط رقمي يستخدم شفرة مورس لإرسال النصوص؟",
+            options: ["صوت FM", "التلفزيون البطيء (SSTV)", "الموجة المستمرة (CW)", "راديو الحزم AX.25"],
+            correct: 2,
+            feedback: "يستخدم نمط CW شفرة مورس وهو فعال جداً حتى في ظروف الإشارة الضعيفة."
+        },
+        {
+            q: "ما هو الغرض الرئيسي من التلفزيون البطيء (SSTV)؟",
+            options: ["إرسال فيديو مباشر عالي الدقة", "إرسال صور ثابتة خطاً بخط عبر الصوت", "تتبع الموقع في الوقت الحقيقي", "الاتصال الصوتي"],
+            correct: 1,
+            feedback: "يقوم SSTV بتحويل الصور إلى نغمات صوتية، مما يسمح بإرسالها عبر قنوات الصوت العادية."
+        },
+        {
+            q: "أي بروتوكول يعتبر 'العمود الفقري' الموثوق لاتصالات البيانات عبر أقمار الهواة؟",
+            options: ["BPSK", "راديو الحزم AX.25", "شفرة مورس", "صوت FM"],
+            correct: 1,
+            feedback: "AX.25 هو البروتوكول القياسي لطبقة وصلة البيانات المستخدم للقياسات والرسائل."
+        },
+        {
+            q: "ماذا يعني اختصار TLE؟",
+            options: ["عنصر وصلة التتبع", "إدخال سجل الوقت", "مجموعة العناصر المكونة من سطرين (TLE)", "محرك موقع المسار"],
+            correct: 2,
+            feedback: "TLE هو تنسيق البيانات المستخدم لوصف مدار القمر الصناعي بدقة."
+        },
+        {
+            q: "في أي نقطة خلال مرور القمر الصناعي يكون انزياح دوبلر صفراً بالضبط؟",
+            options: ["عند لحظة استقبال الإشارة (AOS)", "عند لحظة غياب الإشارة (LOS)", "عند أقصى ارتفاع (فوق الرأس مباشرة)", "خلال المرور بالكامل"],
+            correct: 2,
+            feedback: "في لحظة أقرب اقتراب (TCA)، تكون السرعة النسبية صفراً، مما يؤدي لعدم وجود انزياح دوبلر."
+        },
+        {
+            q: "ما هو نوع الهوائي الشائع للعمل اليدوي عبر أقمار الهواة؟",
+            options: ["هوائي سوطي رأسي", "هوائي حلقي مغناطيسي", "هوائي ياغي (Yagi)", "هوائي ثنائي القطب"],
+            correct: 2,
+            feedback: "هوائيات ياغي هي هوائيات اتجاهية توفر الكسب اللازم لسماع إشارات الأقمار الضعيفة."
+        },
+        {
+            q: "ما هي وظيفة دوّار السمت والارتفاع؟",
+            options: ["لزيادة قدرة الراديو", "لتوجيه الهوائي تلقائياً نحو القمر الصناعي المتحرك", "لتغيير التردد", "لشحن القمر الصناعي"],
+            correct: 1,
+            feedback: "تسمح الدوّارات لنظام التحكم بالكمبيوتر بإبقاء الهوائي موجهاً بدقة نحو موقع القمر الصناعي."
+        },
+        {
+            q: "أين يقع قمر الهواة المستقر بالنسبة للأرض QO-100؟",
+            options: ["على ارتفاع 500 كم", "على ارتفاع حوالي 35,786 كم فوق الأرض", "في مدار قطبي", "يتحرك بسرعة فوق الأفق"],
+            correct: 1,
+            feedback: "يوجد QO-100 في مدار ثابت بالنسبة للأرض، مما يعني بقاءه ثابتاً فوق نقطة واحدة على خط الاستواء."
+        },
+        {
+            q: "لماذا يجب تحديث ملفات TLE بانتظام؟",
+            options: ["لتغيير اسم القمر الصناعي", "لأن الأخطاء المدارية تزداد بمرور الوقت، مما يؤدي لفقدان التتبع", "لفتح نمط FM", "لزيادة عمر البطارية"],
+            correct: 1,
+            feedback: "يؤدي السحب الجوي واختلافات الجاذبية لتغير المدار؛ التحديثات تضمن دقة التتبع."
+        },
+        {
+            q: "ما هو الاستخدام الرئيسي لشبكة TinyGS؟",
+            options: ["اتصالات صوتية مع محطة الفضاء الدولية", "استقبال ومشاركة بيانات أقمار LoRa عالمياً", "التنبؤ بالطقس", "إطلاق أقمار كيوب سات"],
+            correct: 1,
+            feedback: "TinyGS هي شبكة عالمية من المحطات الأرضية منخفضة التكلفة المخصصة لأقمار LoRa."
+        },
+        {
+            q: "ما هو التضمين المستخدم في أقمار LoRa للحصول على حساسية عالية ومدى طويل؟",
+            options: ["AM", "شفرة مورس", "طيف الانتشار بالزقزقة (CSS)", "FM"],
+            correct: 2,
+            feedback: "تستخدم LoRa تقنية CSS للحفاظ على الاتصال حتى تحت مستوى الضوضاء."
+        },
+        {
+            q: "ما هو الغرض من متحكم S.A.T.؟",
+            options: ["نوع من الألواح الشمسية", "جهاز يؤتمت تتبع الهوائي وتصحيح دوبلر", "بطارية قمر صناعي", "تطبيق تتبع محمول"],
+            correct: 1,
+            feedback: "يعمل متحكم S.A.T كواجهة بين الكمبيوتر والراديو/الدوّار لأتمتة المحطة."
+        },
+        {
+            q: "ما هو 'الرابط الهابط' (Downlink) في اتصالات الأقمار الصناعية؟",
+            options: ["الإشارة التي ترسلها إلى القمر الصناعي", "الإشارة التي يرسلها القمر الصناعي إلى الأرض", "تحديث برمجيات", "اتصال الإنترنت للمحطة الأرضية"],
+            correct: 1,
+            feedback: "الرابط الهابط يشير إلى التردد والإشارة القادمة من المركبة الفضائية إلى الأرض."
+        },
+        {
+            q: "أي حقل في إطار AX.25 يوفر فحص الأخطاء CRC-16؟",
+            options: ["حقل العنوان", "حقل التحكم", "تسلسل فحص الإطار (FCS)", "العلم"],
+            correct: 2,
+            feedback: "يضمن حقل FCS وصول حزمة البيانات دون أي تلف أو أخطاء."
+        },
+        {
+            q: "ماذا يحدث للتردد المستقبَل عندما يقترب القمر الصناعي من موقعك؟",
+            options: ["ينزاح للأعلى (إزاحة موجبة)", "ينزاح للأسفل (إزاحة سالبة)", "يبقى كما هو", "يختفي"],
+            correct: 0,
+            feedback: "تماماً مثل صافرة الإسعاف، ينضغط التردد وينزاح للأعلى أثناء اقترابه منك."
+        },
+        {
+            q: "ما هو قمر الهواة الشهير للمبتدئين الذي يعتبر مكرر FM وتم إطلاقه في عام 1995؟",
+            options: ["SO-50", "RS-44", "AO-91", "ISS"],
+            correct: 2,
+            feedback: "يعتبر AO-91 مكرراً شهيراً جداً. ملاحظة: AO-27 كان الكلاسيكي في فترة 1993/95."
+        },
+        {
+            q: "ماذا يعني اختصار ARISS؟",
+            options: ["راديو الهواة على محطة الفضاء الدولية", "راديو الطيران في أنظمة الأقمار الصناعية", "الإبلاغ التلقائي في علوم الفضاء", "راديو متقدم لمحطات ISS"],
+            correct: 0,
+            feedback: "ARISS هو البرنامج الذي يتيح للطلاب التحدث مباشرة مع رواد الفضاء عبر الراديو."
+        }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let timer;
+    let timeLeft = 15;
+    let canAnswer = false;
+
+    const startScreen = document.getElementById('start-screen');
+    const quizArea = document.getElementById('quiz-area');
+    const resultScreen = document.getElementById('result-screen');
+    const qText = document.getElementById('q-text');
+    const optionsBox = document.getElementById('options-box');
+    const progress = document.getElementById('progress-bar');
+    const qCount = document.getElementById('q-count');
+    const timerDisplay = document.getElementById('timer');
+    const feedbackBox = document.getElementById('feedback-box');
+    const nextBtn = document.getElementById('next-btn');
+
+    function startQuiz() {
+        currentQ = 0;
+        score = 0;
+        startScreen.style.display = 'none';
+        resultScreen.style.display = 'none';
+        quizArea.style.display = 'flex';
+        questions.sort(() => Math.random() - 0.5);
+        showQuestion();
+    }
+
+    function showQuestion() {
+        canAnswer = true;
+        nextBtn.style.display = 'none';
+        feedbackBox.style.display = 'none';
+        feedbackBox.className = 'feedback';
+        
+        const q = questions[currentQ];
+        qText.innerText = q.q;
+        qCount.innerText = `السؤال ${currentQ + 1}/${questions.length}`;
+        progress.style.width = `${((currentQ) / questions.length) * 100}%`;
+
+        optionsBox.innerHTML = '';
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => selectOption(i);
+            optionsBox.appendChild(btn);
+        });
+
+        startTimer();
+    }
+
+    function startTimer() {
+        timeLeft = 15;
+        timerDisplay.innerText = timeLeft;
+        timerDisplay.classList.remove('urgent');
+        clearInterval(timer);
+        timer = setInterval(() => {
+            timeLeft--;
+            timerDisplay.innerText = timeLeft;
+            if (timeLeft <= 5) timerDisplay.classList.add('urgent');
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                selectOption(-1);
+            }
+        }, 1000);
+    }
+
+    function selectOption(idx) {
+        if (!canAnswer) return;
+        canAnswer = false;
+        clearInterval(timer);
+
+        const q = questions[currentQ];
+        const buttons = optionsBox.getElementsByClassName('option-btn');
+        
+        if (idx !== -1) {
+            if (idx === q.correct) {
+                score++;
+                buttons[idx].classList.add('correct');
+                feedbackBox.innerHTML = `<strong>صحيح!</strong> ${q.feedback}`;
+                feedbackBox.classList.add('correct-ui');
+            } else {
+                buttons[idx].classList.add('wrong');
+                buttons[q.correct].classList.add('correct');
+                feedbackBox.innerHTML = `<strong>غير صحيح.</strong> ${q.feedback}`;
+                feedbackBox.classList.add('wrong-ui');
+            }
+        } else {
+            buttons[q.correct].classList.add('correct');
+            feedbackBox.innerHTML = `<strong>انتهى الوقت!</strong> ${q.feedback}`;
+            feedbackBox.classList.add('wrong-ui');
+        }
+
+        feedbackBox.style.display = 'block';
+        nextBtn.style.display = 'block';
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerText = 'إنهاء المهمة';
+        } else {
+            nextBtn.innerText = 'السؤال التالي ←';
+        }
+    }
+
+    function nextQuestion() {
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        quizArea.style.display = 'none';
+        resultScreen.style.display = 'flex';
+        
+        const percent = Math.round((score / questions.length) * 100);
+        document.getElementById('final-score').innerText = `${percent}%`;
+        
+        const badge = document.getElementById('tier-badge');
+        const msg = document.getElementById('result-msg');
+        
+        if (percent >= 90) {
+            badge.innerText = "🏆 مشغل متميز";
+            msg.innerText = "رائع! لديك فهم عميق لعمليات الأقمار الصناعية.";
+        } else if (percent >= 75) {
+            badge.innerText = "🚀 جاهز للمهمة";
+            msg.innerText = "عمل رائع! أنت جاهز للبدء في التتبع والاتصال.";
+        } else if (percent >= 60) {
+            badge.innerText = "🛰️ فني أقمار صناعية";
+            msg.innerText = "جهد جيد. راجع ملاحظات المحاضرة لتعزيز مهاراتك.";
+        } else {
+            badge.innerText = "📚 مبتدئ قيد التدريب";
+            msg.innerText = "استمر في التعلم! راديو الهواة رحلة من التعلم المستمر.";
+        }
+    }
+</script>
+
+</body>
+</html>
