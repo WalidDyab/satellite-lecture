@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acknowledgments | SatThon Digital Museum</title>
+<link rel="icon" href="../assets/favicon.ico">
+<style>
+:root{
+  --bg1:#050914;
+  --bg2:#0b1f46;
+  --gold:#f4c34e;
+  --cyan:#16d7ff;
+  --text:#eef4ff;
+  --muted:#b7c4da;
+  --card:rgba(255,255,255,.075);
+  --border:rgba(255,255,255,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 18% 10%, rgba(244,195,78,.18), transparent 24%),
+    radial-gradient(circle at 82% 15%, rgba(22,215,255,.16), transparent 24%),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+  min-height:100vh;
+}
+.wrapper{width:min(1220px,100%);margin:0 auto;padding:24px 16px 44px}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+.title h1{
+  margin:0;
+  font-size:clamp(2rem,5vw,4.2rem);
+  line-height:1.05;
+  letter-spacing:-.035em;
+}
+.title p{
+  margin:10px 0 0;
+  color:var(--muted);
+  line-height:1.65;
+  max-width:780px;
+  font-size:1.04rem;
+}
+.nav{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.nav a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  text-decoration:none;
+  color:white;
+  padding:10px 15px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);
+  font-weight:700;
+}
+.hero-note{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:20px;
+  margin-bottom:22px;
+  box-shadow:0 22px 60px rgba(0,0,0,.24);
+}
+.hero-note h2{
+  margin:0 0 8px;
+  color:var(--gold);
+  font-size:clamp(1.35rem,3vw,2rem);
+}
+.hero-note p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.75;
+}
+.gallery{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:26px;
+}
+.panel{
+  background:rgba(0,0,0,.18);
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:16px;
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+}
+.panel h2{
+  margin:4px 6px 14px;
+  color:var(--gold);
+  font-size:clamp(1.25rem,3vw,1.8rem);
+}
+.panel.ai h2{color:var(--cyan)}
+img{
+  width:100%;
+  display:block;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.14);
+  background:#06101f;
+}
+.caption{
+  color:var(--muted);
+  margin:12px 6px 2px;
+  line-height:1.6;
+}
+.footer{
+  text-align:center;
+  color:#9fb0cc;
+  padding:30px 0 8px;
+  line-height:1.6;
+}
+@media(max-width:720px){
+  .wrapper{padding:18px 10px 32px}
+  .nav{justify-content:flex-start}
+  .panel{padding:10px;border-radius:20px}
+  img{border-radius:16px}
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header class="top">
+    <div class="title">
+      <h1>Special Acknowledgments</h1>
+      <p>
+        With sincere appreciation to the people, organizations, and tools that supported
+        the development of this SatThon digital learning experience.
+      </p>
+    </div>
+
+    <nav class="nav" aria-label="Navigation">
+      <a href="../index.html">🏠 Home</a>
+      <a href="../english/index.html">📘 English Lecture</a>
+      <a href="../arabic/index.html">📗 العربية</a>
+    </nav>
+  </header>
+
+  <section class="hero-note">
+    <h2>Gratitude and Recognition</h2>
+    <p>
+      This page highlights the formal acknowledgments associated with the lecture materials,
+      including appreciation to the Saudi Amateur Radio Society and recognition of the AI-assisted
+      educational content development process.
+    </p>
+  </section>
+
+  <main class="gallery">
+    <section class="panel">
+      <h2>Saudi Amateur Radio Society</h2>
+      <img src="images/sars-acknowledgment.png" alt="Special acknowledgment to the Saudi Amateur Radio Society">
+      <p class="caption">
+        Special acknowledgment to the Saudi Amateur Radio Society, its leadership, administration,
+        Satellite Committee, and Training Committee.
+      </p>
+    </section>
+
+    <section class="panel ai">
+      <h2>Human Expertise + AI Innovation</h2>
+      <img src="images/ai-acknowledgment.png" alt="Acknowledgment of AI-assisted educational content development">
+      <p class="caption">
+        Recognition of the AI-assisted process used to support the development of educational visuals,
+        interactive tools, and supporting media under presenter supervision and technical review.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    SatThon Digital Museum — Amateur Satellite Communication Learning Portal
+  </footer>
+
+</div>
+</body>
+</html>

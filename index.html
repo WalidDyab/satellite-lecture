@@ -3,43 +3,69 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Amateur Satellite Communication Portal</title>
+<title>SatThon Digital Museum | Amateur Satellite Communication</title>
+<meta name="description" content="A bilingual digital learning portal for amateur satellite communication, SatThon participants, engineering students, and amateur radio operators.">
+<link rel="icon" href="assets/favicon.ico">
 <style>
 :root{
-  --navy:#071d49;
   --deep:#050914;
+  --navy:#071d49;
   --blue:#16d7ff;
   --purple:#6d3df2;
   --gold:#f6c453;
-  --card:rgba(255,255,255,.09);
-  --border:rgba(255,255,255,.18);
   --text:#f5f8ff;
   --muted:#c7d2e5;
+  --card:rgba(255,255,255,.09);
+  --border:rgba(255,255,255,.18);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
   margin:0;
-  min-height:100vh;
-  font-family:Arial, Helvetica, sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
   color:var(--text);
   background:
-    radial-gradient(circle at 18% 12%, rgba(22,215,255,.24), transparent 28%),
-    radial-gradient(circle at 88% 18%, rgba(109,61,242,.30), transparent 26%),
-    radial-gradient(circle at 50% 100%, rgba(246,196,83,.16), transparent 28%),
+    radial-gradient(circle at 18% 10%, rgba(22,215,255,.24), transparent 28%),
+    radial-gradient(circle at 88% 14%, rgba(109,61,242,.32), transparent 27%),
+    radial-gradient(circle at 50% 105%, rgba(246,196,83,.18), transparent 30%),
     linear-gradient(135deg,#050914 0%,#081b3d 52%,#160b2f 100%);
+  min-height:100vh;
 }
-.wrapper{
-  width:min(1120px,100%);
-  margin:0 auto;
-  padding:28px 18px 42px;
+a{color:inherit}
+.wrapper{width:min(1180px,100%);margin:0 auto;padding:24px 18px 42px}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:10px 0 22px;
+}
+.logos{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{
+  height:54px;
+  max-width:130px;
+  object-fit:contain;
+  background:rgba(255,255,255,.92);
+  border-radius:14px;
+  padding:8px;
+  border:1px solid rgba(255,255,255,.25);
+}
+.navlinks{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.navlinks a{
+  text-decoration:none;
+  padding:9px 13px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  color:var(--muted);
+  background:rgba(255,255,255,.06);
+  font-size:.92rem;
 }
 .hero{
-  min-height:74vh;
+  min-height:62vh;
   display:grid;
   place-items:center;
   text-align:center;
-  padding:28px 0;
+  padding:30px 0 44px;
 }
 .badge{
   display:inline-flex;
@@ -54,10 +80,10 @@ body{
   margin-bottom:18px;
 }
 h1{
-  font-size:clamp(2.15rem,7vw,5.2rem);
-  line-height:1.02;
+  font-size:clamp(2.25rem,7vw,5.4rem);
+  line-height:1.01;
   margin:0 0 18px;
-  letter-spacing:-.04em;
+  letter-spacing:-.045em;
 }
 .gradient{
   background:linear-gradient(90deg,var(--blue),#fff,var(--gold));
@@ -66,17 +92,47 @@ h1{
   color:transparent;
 }
 .subtitle{
-  max-width:850px;
+  max-width:880px;
   margin:0 auto 30px;
   color:var(--muted);
-  font-size:clamp(1.05rem,2.5vw,1.35rem);
+  font-size:clamp(1.05rem,2.4vw,1.35rem);
   line-height:1.65;
+}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:48px;
+  padding:13px 18px;
+  border-radius:999px;
+  text-decoration:none;
+  font-weight:800;
+  border:1px solid rgba(255,255,255,.18);
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  color:white;
+  box-shadow:0 18px 45px rgba(0,0,0,.22);
+}
+.button.secondary{
+  background:rgba(255,255,255,.08);
+  color:var(--text);
+}
+.section{margin:20px 0 34px}
+.section-head{margin-bottom:16px}
+.section h2{
+  margin:0;
+  font-size:clamp(1.55rem,3.5vw,2.3rem);
+}
+.section p.lead{
+  margin:6px 0 0;
+  color:var(--muted);
+  line-height:1.6;
 }
 .cards{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:16px;
-  margin-top:22px;
 }
 .card{
   text-decoration:none;
@@ -98,110 +154,225 @@ h1{
   border-color:rgba(22,215,255,.7);
   background:rgba(255,255,255,.13);
 }
-.icon{
-  font-size:2.15rem;
-  margin-bottom:18px;
-}
-.card h2{
-  font-size:1.2rem;
-  margin:0 0 8px;
-}
-.card p{
-  margin:0;
-  color:var(--muted);
-  line-height:1.45;
-  font-size:.94rem;
-}
-.section{
-  margin-top:18px;
-  padding:22px;
+.icon{font-size:2.2rem;margin-bottom:16px}
+.card h3{font-size:1.2rem;margin:0 0 8px}
+.card p{margin:0;color:var(--muted);line-height:1.45;font-size:.94rem}
+.ar{direction:rtl;font-family:Tahoma,Arial,sans-serif}
+.media-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.media-card{
+  background:rgba(0,0,0,.2);
+  border:1px solid rgba(255,255,255,.14);
   border-radius:24px;
-  background:rgba(0,0,0,.18);
-  border:1px solid rgba(255,255,255,.13);
+  padding:16px;
+  overflow:hidden;
 }
-.section h3{
-  margin:0 0 10px;
-  color:#ffe4a3;
+video{
+  width:100%;
+  display:block;
+  border-radius:18px;
+  background:#000;
+  border:1px solid rgba(255,255,255,.16);
 }
-.section p{
-  margin:0;
-  color:var(--muted);
-  line-height:1.7;
+.media-card h3{margin:14px 4px 6px}
+.media-card p{margin:0 4px 4px;color:var(--muted);line-height:1.45}
+.info{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}
+.panel{
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:24px;
+  padding:22px;
+}
+.panel h3{margin:0 0 10px;color:#ffe4a3}
+.panel p{margin:0;color:var(--muted);line-height:1.75}
+.partner-row{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+.partner-row img{
+  height:70px;
+  max-width:180px;
+  object-fit:contain;
+  background:rgba(255,255,255,.94);
+  border-radius:16px;
+  padding:10px;
 }
 .footer{
   text-align:center;
   color:#9fb0cc;
   padding:24px 0 8px;
+  line-height:1.55;
 }
-.ar{direction:rtl;font-family:Tahoma, Arial, sans-serif}
-@media(max-width:900px){
+.footer a{text-decoration:none;color:#d9e7ff}
+@media(max-width:920px){
+  .topbar{align-items:flex-start;flex-direction:column}
+  .navlinks{justify-content:flex-start}
   .cards{grid-template-columns:1fr 1fr}
+  .media-grid,.info{grid-template-columns:1fr}
   .hero{min-height:auto}
 }
 @media(max-width:560px){
   .wrapper{padding:18px 12px 30px}
+  .logo{height:48px;max-width:105px}
   .cards{grid-template-columns:1fr}
   .card{min-height:145px}
-  .section{padding:18px}
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <main class="hero">
-    <div>
-      <div class="badge">🛰️ Satathon Learning Portal</div>
-      <h1><span class="gradient">Amateur Satellite</span><br>Communication</h1>
-      <p class="subtitle">
-        A complete bilingual learning package for satellite communication: visual lecture pages,
-        interactive quizzes, practical workflows, TLE tracking, Doppler correction, antennas, LoRa, TinyGS,
-        and student satellite missions.
-      </p>
+  <header class="topbar">
+    <div class="logos" aria-label="Partner logos">
+      <img class="logo" src="assets/SARS.png" alt="Saudi Amateur Radio Society logo">
+      <img class="logo" src="assets/PSU.png" alt="Prince Sultan University logo">
+      <img class="logo" src="assets/CE.png" alt="College of Engineering logo">
+	  <img class="logo" src="assets/RSM.jpg" alt="Riyadh Space Minaret logo">
+    </div>
+    <nav class="navlinks" aria-label="Main navigation">
+      <a href="english/index.html">English</a>
+      <a href="arabic/index.html" class="ar">العربية</a>
+      <a href="quiz-en/index.html">Quiz</a>
+	  <a href="quiz-ar/index.html" class="ar">الاختبار</a>
+      <a href="acknowledgments/index.html">Acknowledgments</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="badge">🛰️ SatThon Digital Museum</div>
+        <h1><span class="gradient">Amateur Satellite</span><br>Communication</h1>
+        <p class="subtitle">
+          A bilingual visual learning portal for SatThon participants, engineering students,
+          and amateur radio operators exploring satellite communication, tracking, antennas,
+          Doppler correction, TLE data, LoRa, TinyGS, and student satellite missions.
+        </p>
+        <div class="cta">
+          <a class="button" href="english/index.html">📘 Start in English</a>
+          <a class="button secondary ar" href="arabic/index.html">📗 ابدأ بالعربية</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="learn">
+      <div class="section-head">
+        <h2>Explore the Portal</h2>
+        <p class="lead">Choose a lecture language or test your understanding through the interactive challenges.</p>
+      </div>
 
       <div class="cards">
-        <a class="card" href="english/">
+        <a class="card" href="english/index.html">
           <div>
             <div class="icon">📘</div>
-            <h2>English Lecture</h2>
-            <p>Full visual lecture and technical explanations.</p>
+            <h3>English Lecture</h3>
+            <p>Visual-first lecture museum with technical explanations and complete slide sequence.</p>
           </div>
         </a>
-        <a class="card ar" href="arabic/">
+
+        <a class="card ar" href="arabic/index.html">
           <div>
             <div class="icon">📗</div>
-            <h2>المحاضرة العربية</h2>
-            <p>النسخة العربية الكاملة للمشاركين.</p>
+            <h3>المحاضرة العربية</h3>
+            <p>نسخة عربية كاملة للمشاركين مع شرح مرئي منظم ومحتوى تدريبي.</p>
           </div>
         </a>
-        <a class="card" href="quiz-en/">
+
+        <a class="card" href="quiz-en/index.html">
           <div>
-            <div class="icon">🚀</div>
-            <h2>English Quiz</h2>
-            <p>Interactive challenge for reviewing key concepts.</p>
+            <div class="icon">🛰️</div>
+            <h3>English Quiz</h3>
+            <p>Interactive satellite communication challenge for reviewing key concepts.</p>
           </div>
         </a>
-        <a class="card ar" href="quiz-ar/">
+
+        <a class="card ar" href="quiz-ar/index.html">
           <div>
-            <div class="icon">🏆</div>
-            <h2>الاختبار العربي</h2>
-            <p>تحدي تفاعلي باللغة العربية.</p>
+            <div class="icon">🛰️</div>
+            <h3>الاختبار العربي</h3>
+            <p>اختبار تفاعلي باللغة العربية لمراجعة المفاهيم الأساسية.</p>
           </div>
         </a>
       </div>
+    </section>
 
-      <section class="section">
-        <h3>Recommended Sharing Method</h3>
+    <section class="section" id="media">
+      <div class="section-head">
+        <h2>Featured Media</h2>
+        <p class="lead">Short video resources from Riyadh Space Minaret ant Prince Sultan University to support the learning experience and outreach activities.</p>
+      </div>
+
+      <div class="media-grid">
+
+        <article class="media-card">
+          <video controls preload="metadata">
+            <source src="media/SARI-02.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <h3>Live Monitoring of the SARI Launch</h3>
+          <p>Recorded from our ground station while tracking the November 2025 launch mission and preparing to capture the first signal from the RawdahScope satellite. </p>
+		</article>
+		
+        <article class="media-card">
+          <video controls preload="metadata">
+            <source src="media/SARI-03.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <h3>SDR Waterfall During Satellite Contact Attempt</h3>
+          <p>Live SDR waterfall display showing our transmitted signal pinging the satellite during early contact operations and signal testing.</p>		
+		  </article>
+		
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="info">
+        <div class="panel">
+          <h3>About This Digital Museum</h3>
+          <p>
+            This portal was prepared as a reusable educational resource for introducing amateur
+            satellite communication in an engaging and practical way. It combines visual learning,
+            bilingual access, interactive quizzes, and references that participants can revisit after
+            the live session.
+          </p>
+        </div>
+
+        <div class="panel">
+          <h3>Quick Access</h3>
+          <p>
+            <a href="acknowledgments/index.html">Acknowledgments</a><br>
+            <a href="english/index.html">English Lecture</a><br>
+            <a href="arabic/index.html" class="ar">المحاضرة العربية</a><br>
+            <a href="quiz-en/index.html">English Quiz</a><br>
+            <a href="quiz-ar/index.html" class="ar">الاختبار العربي</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="partners">
+      <div class="panel">
+        <h3>Partners and Supporting Organizations</h3>
         <p>
-          Share this portal link through WhatsApp, email, or a QR code. Opening the hosted webpage is more reliable
-          on Android and iPhone than sending HTML files directly.
+          Developed to support technical education, amateur radio awareness, and future satellite
+          communication initiatives.
         </p>
-      </section>
-    </div>
+        <div class="partner-row">
+          <img src="assets/SARS.png" alt="Saudi Amateur Radio Society logo">
+          <img src="assets/PSU.png" alt="Prince Sultan University logo">
+          <img src="assets/CE.png" alt="College of Engineering logo">
+		  <img src="assets/RSM.jpg" alt="Riyadh Space Minaret logo">
+        </div>
+      </div>
+    </section>
   </main>
 
-  <div class="footer">
-    Developed as an educational resource for amateur satellite communication outreach and training.
-  </div>
+  <footer class="footer">
+    An educational portal for amateur satellite communication, training, and outreach.<br>
+    SatThon Digital Museum
+  </footer>
 </div>
 </body>
 </html>
